@@ -74,8 +74,35 @@ names(tab2) <- c('Mean', 'Median')
 tab2
 ````
 
+Do these values differ from the estimates from the first part of the assignment? 
+*Yes, these valued differ. 
+
+What is the impact of imputing missing data on the estimates of the total daily number of steps?
+* They are higher for the imputed data set. The reason for this is that there are no 'negative' steps so imputing NAs will just increase the total number of steps.
+
+
 ## Are there differences in activity patterns between weekdays and weekends?
 
 ```{r, echo=TRUE}
-weekdays(as.Date(df$date))
+# Create new factor variable
+df_comp$date <- as.Date(df_comp$date)
+df_comp$is_weekday <- as.factor(ifelse(weekdays(df_comp$date) =="Saturday" | weekdays(df_comp$date) =="Saturday",'no','yes'))
+
+# subset along new variable
+weekday <- subset(df_comp, df_comp$is_weekday == 'yes')
+weekend <- subset(df_comp, df_comp$is_weekday == 'no')
+# Calculate means
+da_wd <- data.frame(tapply(weekday$steps, weekday$interval, mean))
+names(da_wd) <- c('mean_steps')
+da_wd$interval <- rownames(da_wd)
+da_we <- data.frame(tapply(weekend$steps, weekend$interval, mean))
+names(da_we) <- c('mean_steps')
+da_we$interval <- rownames(da_we)
+
+# Setup panel plot 
+par(mfrow = c(2, 1))
+plot(da_wd$interval, da_wd$mean_steps, type='l',xlab='Interval',ylab='Mean steps', main='Weekday')
+plot(da_we$interval, da_we$mean_steps, type='l',xlab='Interval',ylab='Mean steps', main='Weekend')
+
+
 ````
