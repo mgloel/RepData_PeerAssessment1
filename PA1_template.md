@@ -118,6 +118,23 @@ plot(daily_act$interval, daily_act$mean_steps, type='l',xlab='Interval',ylab='Me
 
 ![plot of chunk unnamed-chunk-3](figure/unnamed-chunk-3-1.png) 
 
+```r
+# Interval with Average Maximum Steps 
+daily_act$interval[max(daily_act$mean_steps)]
+```
+
+```
+## [1] "1705"
+```
+
+```r
+max(daily_act$mean_steps)
+```
+
+```
+## [1] 206.1698
+```
+
 ## Imputing missing values
 
 
