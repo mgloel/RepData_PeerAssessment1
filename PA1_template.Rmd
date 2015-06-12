@@ -10,7 +10,9 @@ output:
 ## Loading and preprocessing the data
 
 ```{r, echo=TRUE}
-# library(dplyr)
+# I decided to use the base plotting system and try to do the analysis with R core functions so that
+# no additional packages need to be installed
+
 df <- read.csv('activity.csv')
 head(df)
 ````
@@ -19,13 +21,24 @@ head(df)
 ## What is mean total number of steps taken per day?
 
 ```{r, echo=TRUE}
-mean_total_steps <- tapply(df$steps, df$date, mean)
+df2 <- subset(df, !is.na(df$steps))
+
+mean_total_steps <- data.frame(tapply(df2$steps, df2$date, mean))
+names(mean_total_steps) <- c('mean_steps')
+mean_total_steps$date <- as.Date(rownames(mean_total_steps))
+hist(mean_total_steps$mean_steps, main='Histogram of mean total steps', xlab="Mean Total Steps",col="red", ylim=c(0,20))
+
+tapply(df$steps, df$date, summary)
 
 ````
 
 ## What is the average daily activity pattern?
 
 ```{r, echo=TRUE}
+daily_act <- data.frame(tapply(df2$steps, df2$interval, mean))
+names(daily_act) <- c('mean_steps')
+daily_act$interval <- rownames(daily_act)
+plot(daily_act$interval, daily_act$mean_steps, type='l',xlab='Interval',ylab='Mean steps', main='Daily Activity Pattern')
 
 ````
 
