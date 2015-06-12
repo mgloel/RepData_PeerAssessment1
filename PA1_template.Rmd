@@ -45,11 +45,27 @@ plot(daily_act$interval, daily_act$mean_steps, type='l',xlab='Interval',ylab='Me
 ## Imputing missing values
 
 ```{r, echo=TRUE}
+# Number of rows with NA
+sum(is.na(df_comp$step))
 
+# Create new dataframe with imputed NA's based on resp. interval mean
+df_comp <- df
+
+for(i in 1:nrow(df_comp)){
+    if(is.na(df_comp$steps[i])){  
+        df_comp$steps[i] <- daily_act$mean_steps[which(daily_act$interval == df_comp$interval[i])][1]
+    }
+}
+
+# Histogram
+mean_total_steps2 <- data.frame(tapply(df_comp$steps, df_comp$date, mean))
+names(mean_total_steps2) <- c('mean_steps')
+mean_total_steps2$date <- as.Date(rownames(mean_total_steps2))
+hist(mean_total_steps2$mean_steps, main='Histogram of mean total steps (NA imputed)', xlab="Mean Total Steps",col="green", ylim=c(0,20))
 ````
 
 ## Are there differences in activity patterns between weekdays and weekends?
 
 ```{r, echo=TRUE}
-
+weekdays(as.Date(df$date))
 ````
