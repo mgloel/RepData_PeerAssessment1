@@ -43,6 +43,9 @@ names(daily_act) <- c('mean_steps')
 daily_act$interval <- rownames(daily_act)
 plot(daily_act$interval, daily_act$mean_steps, type='l',xlab='Interval',ylab='Mean steps', main='Daily Activity Pattern')
 
+# Interval with Average Maximum Steps 
+daily_act$interval[max(daily_act$mean_steps)]
+max(daily_act$mean_steps)
 ````
 
 ## Imputing missing values
